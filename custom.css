@@ -1,0 +1,91 @@
+/* Header Next Step */
+.ns-header { border-bottom:1px solid #eee; }
+.ns-header__inner { display:flex; align-items:center; gap:24px; padding:14px 24px; max-width:1200px; margin:0 auto; }
+.ns-logo img { height:40px; width:auto; }
+.ns-nav__list { display:flex; gap:18px; list-style:none; margin:0; padding:0; }
+.ns-nav__list a { text-decoration:none; font-weight:600; }
+.ns-actions { margin-left:auto; display:flex; align-items:center; gap:16px; }
+
+:root {
+    --ns-primary: #111827;   /* texte */
+    --ns-accent:  #ff822e;   /* ta touche couleur */
+    --ns-bg:      #ffffff;
+}
+
+body { color: var(--ns-primary); background: var(--ns-bg); font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+a { color: var(--ns-accent); }
+a:hover { opacity:.85; }
+
+/* ---------- Variables & base ---------- */
+:root{
+    --ns-bg:#ffffff;
+    --ns-text:#111827;
+    --ns-muted:#6b7280;
+    --ns-accent:#ff822e; /* ta touche de couleur */
+    --ns-card:#f9fafb;
+    --ns-border:#e5e7eb;
+    --ns-radius:16px;
+    --ns-shadow:0 10px 20px rgba(0,0,0,.06);
+}
+
+body{background:var(--ns-bg);color:var(--ns-text);}
+
+/* Containers */
+.ns-container{max-width:1200px;margin:0 auto;padding:0 20px;}
+
+/* Titles */
+.ns-title-xl{font-size:clamp(28px,4vw,48px);line-height:1.1;margin:0 0 10px;}
+.ns-title-lg{font-size:clamp(22px,3vw,28px);margin:0 0 16px;}
+.ns-subtitle{color:var(--ns-muted);margin:0 0 24px;}
+
+/* Buttons & inputs */
+.ns-btn{display:inline-block;padding:12px 18px;border-radius:999px;background:var(--ns-accent);color:#fff;font-weight:700;text-decoration:none;box-shadow:var(--ns-shadow);}
+.ns-btn:hover{opacity:.95;transform:translateY(-1px);}
+.ns-link{margin-left:12px;text-decoration:none;font-weight:600;color:var(--ns-text);}
+.ns-input{padding:12px 14px;border:1px solid var(--ns-border);border-radius:999px;min-width:260px;}
+
+/* ---------- Hero ---------- */
+.ns-hero{padding:56px 0;background:linear-gradient(180deg,#fff, #fff5ed);}
+.ns-hero__inner{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;}
+.ns-hero__img{border-radius:var(--ns-radius);box-shadow:var(--ns-shadow);width:100%;height:auto;object-fit:cover;}
+.ns-cta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+
+@media (max-width:900px){
+    .ns-hero__inner{grid-template-columns:1fr;}
+}
+
+/* ---------- USP strip ---------- */
+.ns-usp{padding:18px 0;border-top:1px solid var(--ns-border);border-bottom:1px solid var(--ns-border);background:#fff;}
+.ns-usp__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.ns-usp__item{background:var(--ns-card);border:1px solid var(--ns-border);border-radius:999px;padding:10px 14px;text-align:center;}
+@media (max-width:900px){.ns-usp__grid{grid-template-columns:repeat(2,1fr);}}
+
+/* ---------- Categories ---------- */
+.ns-cats{padding:40px 0;}
+.ns-cats__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.ns-card{display:block;background:var(--ns-card);border:1px solid var(--ns-border);border-radius:var(--ns-radius);padding:28px;text-decoration:none;color:inherit;box-shadow:var(--ns-shadow);}
+.ns-card:hover{transform:translateY(-2px);}
+.ns-card__body h3{margin:0 0 6px;font-size:22px;}
+.ns-card__body p{margin:0;color:var(--ns-muted);}
+@media (max-width:900px){.ns-cats__grid{grid-template-columns:1fr;}}
+
+/* ---------- Products sections ---------- */
+.ns-products{padding:28px 0;}
+.ns-products__grid .products{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media (max-width:1100px){.ns-products__grid .products{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:800px){.ns-products__grid .products{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.ns-products__grid .products{grid-template-columns:1fr;}}
+
+/* Harmoniser rapidement les cartes WooCommerce */
+.ns-products .woocommerce ul.products li.product{
+    background:#fff;border:1px solid var(--ns-border);border-radius:var(--ns-radius);
+    padding:14px;box-shadow:var(--ns-shadow);
+}
+.ns-products .woocommerce-loop-product__title{font-weight:700;font-size:1rem;text-align:center;}
+.ns-products .price{display:block;text-align:center;font-weight:700;margin-top:6px;}
+.ns-products a.button{border-radius:999px;font-weight:700;}
+
+/* ---------- Newsletter ---------- */
+.ns-newsletter{padding:48px 0;background:#fff5ed;}
+.ns-newsletter__inner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.ns-form{display:flex;gap:12px;flex-wrap:wrap;}

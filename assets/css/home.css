@@ -1,0 +1,120 @@
+/* ==== Palette ==== */
+:root{
+    --ns-black:#0d0d0d;
+    --ns-blue:#0066ff;
+    --ns-orange:#ff5a00;
+    --ns-grey:#7a7a7a;
+    --ns-white:#ffffff;
+}
+
+/* ==== Layout utils ==== */
+.ns-container{max-width:1200px; margin:0 auto; padding:0 20px;}
+.ns-section{padding:56px 0;}
+.ns-title{font-size:2rem; margin:0 0 22px;}
+.ns-grid{list-style:none; margin:0; padding:0; display:grid; gap:20px;}
+.ns-grid-4{grid-template-columns:repeat(4,1fr);}
+.ns-grid-3{grid-template-columns:repeat(3,1fr);}
+
+@media (max-width:1024px){
+    .ns-grid-4{grid-template-columns:repeat(3,1fr);}
+}
+@media (max-width:768px){
+    .ns-grid-4{grid-template-columns:repeat(2,1fr);}
+    .ns-grid-3{grid-template-columns:repeat(1,1fr);}
+}
+
+/* ==== Buttons ==== */
+.ns-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:12px 18px; border-radius:12px; font-weight:800; text-decoration:none;
+    border:0; cursor:pointer; transition:transform .12s ease, opacity .12s ease;
+}
+.ns-btn:hover{transform:translateY(-1px);}
+.ns-btn-blue{background:var(--ns-blue); color:#fff;}
+.ns-btn-orange{background:var(--ns-orange); color:#fff;}
+
+/* ==== HERO ==== */
+.ns-hero{
+    background:var(--ns-black);
+    color:#fff;
+    padding:72px 0 24px;
+}
+.ns-hero-inner{
+    display:grid; grid-template-columns:1.05fr .95fr; gap:24px; align-items:center;
+}
+.ns-hero-copy h1{
+    font-size:3rem; line-height:1.05; margin:0 0 10px; letter-spacing:.2px;
+}
+.ns-hero-sub{
+    color:var(--ns-blue); font-weight:800; margin-bottom:20px; letter-spacing:.3px;
+}
+.ns-hero-media{position:relative;}
+.ns-hero-img{width:100%; height:auto; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,.35);}
+
+@media (max-width:980px){
+    .ns-hero-inner{grid-template-columns:1fr;}
+    .ns-hero{padding-top:52px;}
+}
+
+/* ==== NOUVEAUTÉS ==== */
+.ns-new{background:#fff;}
+.ns-product-card{
+    background:#fff; border:1px solid #eee; border-radius:18px; overflow:hidden;
+    display:flex; flex-direction:column; transition:box-shadow .15s ease, transform .15s ease;
+}
+.ns-product-card:hover{box-shadow:0 10px 24px rgba(0,0,0,.08); transform:translateY(-2px);}
+.ns-card-media img{display:block; width:100%; height:auto; background:#fafafa;}
+.ns-card-body{padding:14px;}
+.ns-card-title{font-size:1rem; margin:0 0 6px;}
+.ns-card-title a{text-decoration:none; color:#111;}
+.ns-card-meta{color:#111; font-weight:700; margin-bottom:8px;}
+.ns-product-card .add_to_cart_button{width:100%;}
+
+/* ==== CATÉGORIES ==== */
+.ns-cats{background:#f7f7f7;}
+.ns-cats-grid{gap:18px;}
+.ns-cat{
+    position:relative; display:block; overflow:hidden; border-radius:16px;
+}
+.ns-cat img{width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.05);}
+.ns-cat-inner{
+    position:absolute; inset:auto 0 0 0; padding:18px;
+    background:linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0));
+    display:flex; align-items:flex-end; gap:12px;
+}
+.ns-cat-title{
+    color:#fff; font-size:1.6rem; font-weight:800; letter-spacing:.3px; text-transform:uppercase;
+}
+
+/* ==== STORYTELLING ==== */
+.ns-story-wrap{
+    display:grid; grid-template-columns:1.1fr .9fr; gap:24px; align-items:center;
+}
+.ns-story-copy h2{margin-top:0;}
+.ns-highlight{color:var(--ns-orange); font-weight:900; font-size:1.6rem; margin:.6rem 0 1rem;}
+.ns-story-media img{width:100%; height:auto; border-radius:16px; box-shadow:0 12px 28px rgba(0,0,0,.12);}
+@media (max-width:980px){
+    .ns-story-wrap{grid-template-columns:1fr;}
+}
+
+/* ==== NEWSLETTER ==== */
+.ns-newsletter{
+    background:linear-gradient(90deg, var(--ns-blue), var(--ns-black));
+    color:#fff; padding:42px 0;
+}
+.ns-newsletter-inner{
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+}
+.ns-news-copy h3{margin:0 0 6px; font-size:1.6rem;}
+.ns-form{display:flex; gap:10px;}
+.ns-form input[type="email"]{
+    min-width:260px; padding:12px 14px; border-radius:12px; border:0;
+}
+@media (max-width:780px){
+    .ns-newsletter-inner{flex-direction:column; align-items:flex-start;}
+    .ns-form{width:100%;}
+    .ns-form input[type="email"]{flex:1; min-width:0; width:100%;}
+}
+
+/* ==== Accessibility ==== */
+a:focus, button:focus, input:focus{outline:2px solid var(--ns-blue); outline-offset:2px;}

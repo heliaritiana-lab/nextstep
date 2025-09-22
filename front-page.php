@@ -6,13 +6,14 @@ get_header(); ?>
 
         <!-- HERO -->
         <section class="ns-hero">
+            <div class="ns-hero__bg" style="background-image:url('<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/hero.png' ); ?>');"></div>
+            <div class="ns-hero__shade"></div>
             <div class="ns-container ns-hero__inner">
                 <div class="ns-hero__text">
-                    <h1 class="ns-title-xl">NextStep — Sneakers sélection</h1>
-                    <p class="ns-subtitle">Des paires triées, un style net. Nouveautés, classiques et drops.</p>
+                    <p class="ns-eyebrow">ONE STEP AHEAD</p>
+                    <h1 class="ns-title-xl"><span>Ton prochain pas</span><br><span>commence ici</span></h1>
                     <div class="ns-cta">
-                        <a class="ns-btn" href="<?php echo esc_url( wc_get_page_permalink('shop') ); ?>">Voir la boutique</a>
-                        <a class="ns-link" href="<?php echo esc_url( wc_get_cart_url() ); ?>">Mon panier</a>
+                        <a class="ns-btn ns-btn--primary" href="<?php echo esc_url( wc_get_page_permalink('shop') ); ?>">Shop now</a>
                     </div>
                 </div>
                 <div class="ns-hero__media">
@@ -26,33 +27,41 @@ get_header(); ?>
             </div>
         </section>
 
-        <!-- USP (arguments de valeur) -->
-        <section class="ns-usp">
-            <div class="ns-container ns-usp__grid">
-                <div class="ns-usp__item">✅ Livraison rapide</div>
-                <div class="ns-usp__item">↩️ Retours 14 jours</div>
-                <div class="ns-usp__item">🔒 Paiement sécurisé</div>
-                <div class="ns-usp__item">⭐ Sélection vérifiée</div>
+        <!-- READY / sélection -->
+        <section class="ns-ready">
+            <div class="ns-container">
+                <h2 class="ns-title-ready">Ready for your<br>Next Step ?</h2>
+                <div class="ns-ready__grid">
+                    <?php echo do_shortcode('[products limit="4" columns="4" orderby="date" order="DESC" visibility="visible"]'); ?>
+                </div>
             </div>
         </section>
 
-        <!-- Catégories (ex. Homme / Femme) -->
+        <!-- Catégories (Homme / Femme / Enfant) -->
         <section class="ns-cats">
             <div class="ns-container">
-                <h2 class="ns-title-lg">Catégories</h2>
                 <div class="ns-cats__grid">
-                    <a class="ns-card ns-card--cat" href="<?php echo esc_url( get_term_link( 'Homme', 'product_cat' ) ); ?>">
-                        <div class="ns-card__body">
-                            <h3>Homme</h3>
-                            <p>Pointures 39–49</p>
+                    <?php
+                    $ns_categories = [
+                        [ 'slug' => 'homme',  'label' => 'HOMME'  ],
+                        [ 'slug' => 'femme',  'label' => 'FEMME'  ],
+                        [ 'slug' => 'enfant', 'label' => 'ENFANT' ],
+                    ];
+                    foreach ( $ns_categories as $item ) {
+                        $term = get_term_by( 'slug', $item['slug'], 'product_cat' );
+                        if ( ! $term || is_wp_error( $term ) ) { continue; }
+                        $thumb_id = get_term_meta( $term->term_id, 'thumbnail_id', true );
+                        $img_url = $thumb_id ? wp_get_attachment_image_url( (int) $thumb_id, 'large' ) : '';
+                        $style   = $img_url ? 'style="background-image:url(' . esc_url( $img_url ) . ');"' : '';
+                        $link    = get_term_link( $term );
+                        ?>
+                        <div class="ns-card ns-card--tile" <?php echo $style; ?>>
+                            <div class="ns-card__body">
+                                <h3><?php echo esc_html( $item['label'] ); ?></h3>
+                                <a class="ns-btn ns-btn--ghost" href="<?php echo esc_url( $link ); ?>">Explorer</a>
+                            </div>
                         </div>
-                    </a>
-                    <a class="ns-card ns-card--cat" href="<?php echo esc_url( get_term_link( 'Femme', 'product_cat' ) ); ?>">
-                        <div class="ns-card__body">
-                            <h3>Femme</h3>
-                            <p>Pointures 35–43</p>
-                        </div>
-                    </a>
+                    <?php } ?>
                 </div>
             </div>
         </section>
@@ -83,13 +92,27 @@ get_header(); ?>
             </div>
         </section>
 
-        <!-- Newsletter (simple) -->
+        <!-- Statement brand section -->
+        <section class="ns-statement">
+            <div class="ns-container ns-statement__inner">
+                <div class="ns-statement__text">
+                    <h2>Next Step, ce n’est pas qu’une paire de sneakers, c’est une culture.</h2>
+                    <p class="ns-statement__claim"><span>SNEAKERS.</span> <span>STYLE.</span> <span>STATEMENT.</span></p>
+                </div>
+                <div class="ns-statement__visual"></div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
         <section class="ns-newsletter">
             <div class="ns-container ns-newsletter__inner">
-                <h2 class="ns-title-lg">Reste au courant des drops</h2>
+                <div class="ns-newsletter__copy">
+                    <h2 class="ns-title-lg">Reçois les drops en avant-première</h2>
+                    <p class="ns-subtitle">Des actus courtes, zéro spam. Désinscription en 1 clic.</p>
+                </div>
                 <form class="ns-form" action="#" method="post">
                     <input class="ns-input" type="email" name="email" placeholder="Ton email" required>
-                    <button class="ns-btn" type="submit">S’inscrire</button>
+                    <button class="ns-btn ns-btn--primary" type="submit">S’inscrire</button>
                 </form>
             </div>
         </section>

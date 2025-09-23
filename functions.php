@@ -79,5 +79,96 @@ add_action('wp_enqueue_scripts', function () {
         ';
     });
 
+    // JavaScript pour l'effet hover des cartes de catégories
+    add_action('wp_footer', function () {
+        ?>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryCards = document.querySelectorAll('.ns-card--tile[data-hover-bg]');
+            
+            categoryCards.forEach(function(card) {
+                const hoverBg = card.getAttribute('data-hover-bg');
+                
+                card.addEventListener('mouseenter', function() {
+                    this.style.setProperty('--hover-bg', 'url(' + hoverBg + ')');
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.removeProperty('--hover-bg');
+                });
+            });
+        });
+        </script>
+        <?php
+    });
 
+    // Modifier l'affichage des prix pour les produits variables
+    add_filter('woocommerce_get_price_html', function($price, $product) {
+        if (is_admin() || !$product) {
+            return $price;
+        }
+        
+        // Seulement dans les boucles de produits (pas sur les pages individuelles)
+        if (is_product()) {
+            return $price;
+        }
+        
+        if ($product->is_type('variable')) {
+            $variation_prices = $product->get_variation_prices();
+            if (!empty($variation_prices['price'])) {
+                $min_price = min($variation_prices['price']);
+                $formatted_min_price = wc_price($min_price);
+                return '<span class="price">À partir de ' . $formatted_min_price . '</span>';
+            }
+        }
+        
+        return $price;
+    }, 10, 2);
+
+    // Modifier le texte du bouton d'ajout au panier
+    add_filter('woocommerce_product_add_to_cart_text', function($text, $product) {
+        if (is_admin() || !$product) {
+            return $text;
+        }
+        
+        // Seulement dans les boucles de produits (pas sur les pages individuelles)
+        if (is_product()) {
+            return $text;
+        }
+        
+        if ($product->is_type('variable') || $product->is_type('grouped')) {
+            return 'Voir le produit';
+        }
+        
+        return $text;
+    }, 10, 2);
+
+    // Modifier l'URL du bouton d'ajout au panier pour les produits variables
+    add_filter('woocommerce_product_add_to_cart_url', function($url, $product) {
+        if (is_admin() || !$product) {
+            return $url;
+        }
+        
+        // Seulement dans les boucles de produits (pas sur les pages individuelles)
+        if (is_product()) {
+            return $url;
+        }
+        
+        if ($product->is_type('variable') || $product->is_type('grouped')) {
+            return $product->get_permalink();
+        }
+        
+        return $url;
+    }, 10, 2);
+
+
+});
+
+// Menus (header + footer)
+add_action('after_setup_theme', function(){
+    register_nav_menus([
+        'primary'       => __('Menu principal', 'next-step'),
+        'footer'        => __('Menu pied de page', 'next-step'),
+        'footer_legal'  => __('Menu légal pied de page', 'next-step'),
+    ]);
 });

@@ -17,12 +17,14 @@ get_header(); ?>
                     </div>
                 </div>
                 <div class="ns-hero__media">
-                    <?php
-                    // Image mise en avant de la page "Accueil" si définie
-                    if ( has_post_thumbnail() ) {
-                        the_post_thumbnail('large', ['class' => 'ns-hero__img']);
-                    }
-                    ?>
+                    <a class="ns-hero__img-link" href="<?php echo esc_url( wc_get_page_permalink('shop') ); ?>">
+                        <?php
+                        // Image mise en avant de la page "Accueil" si définie
+                        if ( has_post_thumbnail() ) {
+                            the_post_thumbnail('large', ['class' => 'ns-hero__img']);
+                        }
+                        ?>
+                    </a>
                 </div>
             </div>
         </section>
@@ -50,17 +52,18 @@ get_header(); ?>
                     foreach ( $ns_categories as $item ) {
                         $term = get_term_by( 'slug', $item['slug'], 'product_cat' );
                         if ( ! $term || is_wp_error( $term ) ) { continue; }
-                        $thumb_id = get_term_meta( $term->term_id, 'thumbnail_id', true );
-                        $img_url = $thumb_id ? wp_get_attachment_image_url( (int) $thumb_id, 'large' ) : '';
-                        $style   = $img_url ? 'style="background-image:url(' . esc_url( $img_url ) . ');"' : '';
+                        // Image de fond depuis /assets/img/{slug}.png
+                        $img_url = trailingslashit( get_stylesheet_directory_uri() ) . 'assets/img/' . $item['slug'] . '.png';
+                        $img_hover_url = trailingslashit( get_stylesheet_directory_uri() ) . 'assets/img/' . $item['slug'] . '2.png';
+                        $style   = 'style="background-image:url(' . esc_url( $img_url ) . ');"';
                         $link    = get_term_link( $term );
                         ?>
-                        <div class="ns-card ns-card--tile" <?php echo $style; ?>>
+                        <a class="ns-card ns-card--tile" href="<?php echo esc_url( $link ); ?>" <?php echo $style; ?> data-hover-bg="<?php echo esc_url( $img_hover_url ); ?>">
                             <div class="ns-card__body">
                                 <h3><?php echo esc_html( $item['label'] ); ?></h3>
-                                <a class="ns-btn ns-btn--ghost" href="<?php echo esc_url( $link ); ?>">Explorer</a>
+                                <span class="ns-btn ns-btn--ghost">Explorer</span>
                             </div>
-                        </div>
+                        </a>
                     <?php } ?>
                 </div>
             </div>
@@ -99,7 +102,13 @@ get_header(); ?>
                     <h2>Next Step, ce n’est pas qu’une paire de sneakers, c’est une culture.</h2>
                     <p class="ns-statement__claim"><span>SNEAKERS.</span> <span>STYLE.</span> <span>STATEMENT.</span></p>
                 </div>
-                <div class="ns-statement__visual"></div>
+                <div class="ns-statement__visual">
+                    <video class="ns-statement__video" autoplay muted loop playsinline>
+                        <source src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/statement.mp4' ); ?>" type="video/mp4">
+                        <source src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/statement.webm' ); ?>" type="video/webm">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
+                </div>
             </div>
         </section>
 

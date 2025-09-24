@@ -25,13 +25,7 @@
 			<!-- Logo -->
 			<div class="ns-logo">
 				<a href="<?php echo esc_url( home_url('/') ); ?>" class="ns-logo__link">
-					<?php
-					if ( has_custom_logo() ) {
-						the_custom_logo();
-					} else {
-						bloginfo('name');
-					}
-					?>
+					<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/icons/logo.png' ); ?>" alt="<?php bloginfo('name'); ?>" class="ns-logo__img">
 				</a>
 			</div>
 

@@ -1,5 +1,7 @@
 <?php
 add_action('wp_enqueue_scripts', function () {
+
+
     // CSS du parent
     wp_enqueue_style(
         'orchid-store-style',
@@ -71,10 +73,11 @@ add_action('wp_enqueue_scripts', function () {
 
     add_action('wp_head', function () {
         $base = get_stylesheet_directory_uri() . '/assets/icons';
+        $favicon_file = get_stylesheet_directory() . '/assets/icons/next-step-favicon.png';
+        $version = file_exists($favicon_file) ? filemtime($favicon_file) : time();
         echo '
-        <link rel="icon" type="image/png" sizes="32x32" href="'.$base.'/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="'.$base.'/favicon-16x16.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="'.$base.'/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="'.$base.'/next-step-favicon.png?v='.$version.'">
+        <link rel="shortcut icon" type="image/png" href="'.$base.'/next-step-favicon.png?v='.$version.'">
         <meta name="theme-color" content="#ff822e">
         ';
     });
@@ -164,6 +167,18 @@ add_action('wp_enqueue_scripts', function () {
 
 });
 
+// Modifier l'affichage du stock WooCommerce
+add_filter( 'woocommerce_get_availability_text', 'ns_custom_stock_text', 10, 2 );
+function ns_custom_stock_text( $availability, $product ) {
+    if ( $product->is_in_stock() ) {
+        $availability = 'En stock';
+    } else {
+        $availability = 'Rupture de stock';
+    }
+    return $availability;
+}
+
+
 // Menus (header + footer)
 add_action('after_setup_theme', function(){
     register_nav_menus([
@@ -172,3 +187,21 @@ add_action('after_setup_theme', function(){
         'footer_legal'  => __('Menu légal pied de page', 'next-step'),
     ]);
 });
+
+// Retirer le bouton "Ajouter/Choix des options" de la boucle produit (pages boutique/catégories)
+add_action( 'init', function () {
+    remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+});
+
+// Ajouter un lien overlay sur toute la carte produit
+add_action( 'woocommerce_before_shop_loop_item', function () {
+    global $product;
+    if ( ! $product ) return;
+    echo '<a class="ns-card-link" href="' . esc_url( get_permalink( $product->get_id() ) ) . '" aria-label="' . esc_attr( $product->get_name() ) . '"></a>';
+}, 1 );
+
+
+add_action('wp_enqueue_scripts', function () {
+    wp_enqueue_style('dashicons'); // nécessaire pour afficher les .dashicons côté front
+  });
+  

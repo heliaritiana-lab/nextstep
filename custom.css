@@ -157,9 +157,8 @@ body{background:var(--ns-bg);color:var(--ns-text);}
     padding:14px;box-shadow:var(--ns-shadow);
 }
 .ns-products .woocommerce-loop-product__title{font-weight:700;font-size:1rem;text-align:center;}
-.ns-products .price{display:block;text-align:center;font-weight:700;margin-top:6px;color:var(--ns-accent);}
-.ns-products a.button{border-radius:999px;font-weight:700;background:var(--ns-blue);color:#fff;padding:8px 16px;text-decoration:none;display:inline-block;transition:all 0.2s ease;}
-.ns-products a.button:hover{background:var(--ns-accent);transform:translateY(-1px);}
+.ns-products .price{display:block;text-align:center;font-weight:700;margin-top:6px;}
+.ns-products a.button{border-radius:999px;font-weight:700;}
 
 /* ---------- Newsletter ---------- */
 .ns-newsletter{padding:56px 0;background:#fff5ed;border-top:1px solid var(--ns-border);} 
@@ -171,7 +170,7 @@ body{background:var(--ns-bg);color:var(--ns-text);}
 .ns-footer{background:#0d0d0d;color:#fff;margin-top:40px;}
 .ns-footer a{color:#fff;text-decoration:none;}
 .ns-footer a:hover{opacity:.85;}
-.ns-footer__grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:24px;padding:36px 0;}
+.ns-footer__grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:24px;padding:36px 0;}
 .ns-footer__brand .ns-logo{display:inline-block;font-weight:800;font-size:20px;color:#fff;text-decoration:none;margin-bottom:8px;}
 .ns-footer__tag{color:#bdbdbd;margin:0 0 16px;}
 .ns-footer__title{font-size:14px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px;color:#bdbdbd;}
@@ -221,7 +220,7 @@ body{background:var(--ns-bg);color:var(--ns-text);}
     margin: 0 auto;
     padding: 12px 20px;
     display: grid;
-    grid-template-columns: 180px 1fr auto; /* logo | menu | actions */
+    grid-template-columns: 250px 1fr auto; /* logo | menu | actions - augmenté pour le logo */
     align-items: center;
     gap: 16px;
   }
@@ -236,9 +235,12 @@ body{background:var(--ns-bg);color:var(--ns-text);}
     text-decoration: none;
     line-height: 1;
   }
-  .ns-logo img {
-    height: 32px; /* ajuste selon ton logo */
+  .ns-logo__img {
+    height: 40px; /* taille optimale pour la visibilité */
     width: auto;
+    max-width: 180px; /* limite la largeur */
+    object-fit: contain; /* garde les proportions */
+    margin-left: 70px; /* déplace le logo vers la droite */
   }
   
   /* ===== Menu principal ===== */
@@ -392,6 +394,9 @@ body{background:var(--ns-bg);color:var(--ns-text);}
     }
     .ns-search__input {
       width: 120px;
+    }
+    .ns-logo__img {
+      margin-left: 0; /* pas de marge sur mobile */
     }
   }
   

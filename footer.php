@@ -33,15 +33,6 @@
             </ul>
         </div>
 
-        <div class="ns-footer__col">
-            <h3 class="ns-footer__title">Support</h3>
-            <ul class="ns-footer__list">
-                <li><a href="<?php echo esc_url( wc_get_page_permalink('shop') ); ?>">Boutique</a></li>
-                <li><a href="<?php echo esc_url( wc_get_cart_url() ); ?>">Panier</a></li>
-                <li><a href="<?php echo esc_url( wc_get_checkout_url() ); ?>">Commander</a></li>
-                <li><a href="<?php echo esc_url( get_permalink( wc_get_page_id( 'myaccount' ) ) ); ?>">Mon compte</a></li>
-            </ul>
-        </div>
 
         <div class="ns-footer__col">
             <h3 class="ns-footer__title">Légal</h3>

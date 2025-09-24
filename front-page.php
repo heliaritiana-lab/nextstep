@@ -13,7 +13,7 @@ get_header(); ?>
                     <p class="ns-eyebrow">ONE STEP AHEAD</p>
                     <h1 class="ns-title-xl"><span>Ton prochain pas</span><br><span>commence ici</span></h1>
                     <div class="ns-cta">
-                        <a class="ns-btn ns-btn--primary" href="<?php echo esc_url( wc_get_page_permalink('shop') ); ?>">Shop now</a>
+                        <a class="ns-btn ns-btn--primary" href="<?php echo esc_url( wc_get_page_permalink('shop') ); ?>">Découvrir</a>
                     </div>
                 </div>
                 <div class="ns-hero__media">

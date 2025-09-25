@@ -94,9 +94,17 @@
 				<?php endif; ?>
 
 				<!-- Compte -->
-				<a class="ns-icon" href="<?php echo esc_url( get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>" aria-label="<?php esc_attr_e('Mon compte','nextstep'); ?>">
-					<span class="dashicons dashicons-admin-users"></span>
-				</a>
+				<div id="ns-account-toggle">
+					<?php if ( is_user_logged_in() ): ?>
+						<a class="ns-icon" href="<?php echo esc_url( get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>" aria-label="<?php esc_attr_e('Mon compte','nextstep'); ?>">
+							<span class="dashicons dashicons-admin-users"></span>
+						</a>
+					<?php else: ?>
+						<a class="ns-icon" href="<?php echo esc_url( home_url('/connexion/') ); ?>" aria-label="<?php esc_attr_e('Se connecter','nextstep'); ?>">
+							<span class="dashicons dashicons-admin-users"></span>
+						</a>
+					<?php endif; ?>
+				</div>
 
 			</div><!-- .ns-actions -->
 

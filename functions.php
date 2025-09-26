@@ -1239,4 +1239,237 @@ add_action('wp_footer', function() {
 add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('dashicons'); // nécessaire pour afficher les .dashicons côté front
   });
+
+// JavaScript pour la page Nouveautés
+add_action('wp_footer', function() {
+    if (is_page('nouveautes')) {
+        ?>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion du tri
+            const sortSelect = document.querySelector('.ns-filter__select');
+            if (sortSelect) {
+                sortSelect.addEventListener('change', function() {
+                    const products = Array.from(document.querySelectorAll('.ns-product__card'));
+                    const sortBy = this.value;
+                    
+                    products.sort(function(a, b) {
+                        const titleA = a.querySelector('.ns-product__title').textContent;
+                        const titleB = b.querySelector('.ns-product__title').textContent;
+                        const priceA = parseFloat(a.querySelector('.ns-price__current').textContent.replace(/[^\d,]/g, '').replace(',', '.'));
+                        const priceB = parseFloat(b.querySelector('.ns-price__current').textContent.replace(/[^\d,]/g, '').replace(',', '.'));
+                        
+                        switch(sortBy) {
+                            case 'price-asc':
+                                return priceA - priceB;
+                            case 'price-desc':
+                                return priceB - priceA;
+                            case 'popularity':
+                                return Math.random() - 0.5; // Simulation
+                            default: // date
+                                return 0;
+                        }
+                    });
+                    
+                    // Réorganiser les produits
+                    const grid = document.querySelector('.ns-products__grid');
+                    products.forEach(function(product) {
+                        grid.appendChild(product);
+                    });
+                    
+                    // Animation de réorganisation
+                    products.forEach(function(product, index) {
+                        product.style.opacity = '0';
+                        product.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            product.style.transition = 'all 0.3s ease';
+                            product.style.opacity = '1';
+                            product.style.transform = 'translateY(0)';
+                        }, index * 50);
+                    });
+                });
+            }
+            
+            // Animation d'apparition des produits au scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observer tous les produits
+            productCards.forEach(function(card, index) {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+        });
+        </script>
+        <?php
+    }
+});
+
+/* ===============================
+   Filtrage par marque pour les catégories
+   =============================== */
+
+/**
+ * Ajouter un filtre pour les marques dans les pages de catégories
+ */
+add_action('woocommerce_product_query', 'ns_filter_products_by_brand');
+function ns_filter_products_by_brand($q) {
+    // Vérifier si nous sommes sur une page de catégorie et qu'un filtre marque est actif
+    if (!is_admin() && $q->is_main_query() && is_product_category()) {
+        
+        if (isset($_GET['brand']) && !empty($_GET['brand'])) {
+            $brand_slug = sanitize_text_field($_GET['brand']);
+            
+            // Ajouter une meta query pour filtrer par marque
+            $meta_query = $q->get('meta_query');
+            if (!is_array($meta_query)) {
+                $meta_query = array();
+            }
+            
+            // Récupérer l'ID de la marque
+            $brand_term = get_term_by('slug', $brand_slug, 'product_brand');
+            if ($brand_term && !is_wp_error($brand_term)) {
+                $meta_query[] = array(
+                    'key' => 'product_brand',
+                    'value' => $brand_term->term_id,
+                    'compare' => '='
+                );
+            }
+            
+            $q->set('meta_query', $meta_query);
+        }
+    }
+}
+
+/**
+ * Fonction helper pour récupérer les marques visibles pour une catégorie
+ */
+function ns_get_brands_for_category($category_slug) {
+    $all_brands = get_terms(array(
+        'taxonomy' => 'product_brand',
+        'hide_empty' => true,
+    ));
+    
+    if (empty($all_brands) || is_wp_error($all_brands)) {
+        return array();
+    }
+    
+    return $all_brands; // Pour l'instant, retourner toutes les marques
+}
+
+/* ===============================
+   Amélioration de la recherche
+   =============================== */
+
+/**
+ * Améliorer la recherche pour inclure les produits WooCommerce
+ */
+add_action('pre_get_posts', 'ns_improve_search_query');
+function ns_improve_search_query($query) {
+    if (!is_admin() && $query->is_main_query() && $query->is_search()) {
+        // Inclure les produits dans la recherche
+        $post_types = $query->get('post_type');
+        if (empty($post_types)) {
+            $query->set('post_type', array('post', 'page', 'product'));
+        }
+        
+        // Gérer le tri des résultats de recherche
+        if (isset($_GET['orderby'])) {
+            $orderby = sanitize_text_field($_GET['orderby']);
+            switch ($orderby) {
+                case 'price-asc':
+                    $query->set('meta_key', '_price');
+                    $query->set('orderby', 'meta_value_num');
+                    $query->set('order', 'ASC');
+                    break;
+                case 'price-desc':
+                    $query->set('meta_key', '_price');
+                    $query->set('orderby', 'meta_value_num');
+                    $query->set('order', 'DESC');
+                    break;
+                case 'popularity':
+                    $query->set('meta_key', 'total_sales');
+                    $query->set('orderby', 'meta_value_num');
+                    $query->set('order', 'DESC');
+                    break;
+                case 'date':
+                    $query->set('orderby', 'date');
+                    $query->set('order', 'DESC');
+                    break;
+                case 'relevance':
+                default:
+                    // Par défaut, WordPress gère la pertinence
+                    break;
+            }
+        }
+    }
+}
+
+/**
+ * Ajouter des champs de recherche personnalisés pour WooCommerce
+ */
+add_filter('woocommerce_product_data_store_cpt_get_products_query', 'ns_handle_custom_search_query_var', 10, 2);
+function ns_handle_custom_search_query_var($query, $query_vars) {
+    if (!empty($query_vars['ns_search'])) {
+        $query['meta_query'][] = array(
+            'relation' => 'OR',
+            array(
+                'key' => '_sku',
+                'value' => $query_vars['ns_search'],
+                'compare' => 'LIKE'
+            ),
+            array(
+                'key' => '_product_attributes',
+                'value' => $query_vars['ns_search'],
+                'compare' => 'LIKE'
+            )
+        );
+    }
+    return $query;
+}
+
+/**
+ * Améliorer la recherche pour inclure les SKU et attributs
+ */
+add_action('woocommerce_product_query', 'ns_enhance_product_search');
+function ns_enhance_product_search($q) {
+    if (!is_admin() && $q->is_main_query() && $q->is_search()) {
+        $search_term = get_search_query();
+        if (!empty($search_term)) {
+            $meta_query = $q->get('meta_query');
+            if (!is_array($meta_query)) {
+                $meta_query = array();
+            }
+            
+            $meta_query[] = array(
+                'relation' => 'OR',
+                array(
+                    'key' => '_sku',
+                    'value' => $search_term,
+                    'compare' => 'LIKE'
+                ),
+                array(
+                    'key' => '_product_attributes',
+                    'value' => $search_term,
+                    'compare' => 'LIKE'
+                )
+            );
+            
+            $q->set('meta_query', $meta_query);
+        }
+    }
+}
   

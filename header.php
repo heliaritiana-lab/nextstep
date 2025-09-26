@@ -47,7 +47,7 @@
 			<nav class="ns-nav" aria-label="<?php esc_attr_e('Navigation principale','nextstep'); ?>">
 				<ul class="ns-nav__list">
 					<li>
-						<a href="<?php echo esc_url( home_url('/nouveautes/') ); ?>">Nouveauté</a>
+						<a href="<?php echo esc_url( home_url('/nouveautes/') ); ?>">Nouveautés</a>
 					</li>
 					<li>
 						<a href="<?php echo esc_url( ns_term_url_by_slug('homme') ); ?>"
